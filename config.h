@@ -14,7 +14,7 @@ static const int showsystray        = 0;        /* 0 means no systray */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "FiraCode Nerd Font:size=12" };
+static const char *fonts[]          = { "FiraCode Nerd Font:size=11" };
 static const char dmenufont[]       = "FiraCode Nerd Font:size=14";
 static const char col_gray1[]       = "#2E3440";
 static const char col_gray2[]       = "#4c566a";
@@ -40,6 +40,8 @@ static const Rule rules[] = {
 	{ "Firefox",          NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "st-256color",      NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ NULL,               NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	{ "Spotify",		  NULL,		NULL,			1 << 8,    0,		   0,			-1,		  -1 },
+	{ "kcalc",			  NULL,		NULL,			0,		   1,		   0,			-1,		  -1 },
 };
 
 /* layout(s) */
@@ -71,7 +73,6 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, "-bw", "2", "-c", "-l", "10",  NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browser[] = { "brave", NULL };
-static const char *dolphin[] = { "dolphin", NULL };
 static const char *spotify[] = { "spotify-launcher", NULL };
 #define volctl "volctl.sh"
 #define mediactl "mediactl.sh"
@@ -84,7 +85,7 @@ static const char *media_prev[] = { mediactl, "prev", NULL };
 static const char *flameshotGUI[] = { "flameshot", "gui", NULL };
 static const char *flameshotFULL[] = { "flameshot", "full", NULL };
 static const char *powermenu[] = { "powermenu.sh", NULL };
-static const char *htop[] = { "st", "-e ", "htop", NULL };
+static const char *htop[] = { "st", "-e ", "htop", "-t", NULL };
 static const char *monbrdown[] = { "brightnessctl", "s", "10%-" };
 static const char *monbrup[] = { "brightnessctl", "s", "+10%" };
 static const char *change_monitor[] = { "mon_change.sh", NULL };
@@ -99,11 +100,11 @@ static const Key keys[] = {
 	{ 0,				            XF86XK_AudioRaiseVolume,   spawn, {.v = volUp } },
 	{ 0,				            XF86XK_AudioMute,          spawn,   {.v = muteToggle } },
 	{ 0,				            XK_Print,  spawn,          {.v = flameshotGUI } },
-	{ 0,				XF86XK_AudioPlay, spawn,   {.v = media_play } },
-	{ 0,				XF86XK_AudioNext, spawn,   {.v = media_next } },
-	{ 0,				XF86XK_AudioPrev, spawn,   {.v = media_prev } },
+	{ 0,							XF86XK_AudioPlay, spawn,   {.v = media_play } },
+	{ 0,							XF86XK_AudioNext, spawn,   {.v = media_next } },
+	{ 0,							XF86XK_AudioPrev, spawn,   {.v = media_prev } },
 	{ MODKEY,						XK_x,      spawn,          {.v = powermenu } },
-	{ MODKEY,			XK_Escape,	    spawn,	   {.v = htop } },
+	{ MODKEY,						XK_Escape,	    spawn,	   {.v = htop } },
 	{ ShiftMask,			        XK_Print,  spawn,	       {.v = flameshotFULL } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
@@ -113,8 +114,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	/*{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },*/
-	{ MODKEY,                       XK_d,      spawn,          {.v = dolphin } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
