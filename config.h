@@ -42,6 +42,7 @@ static const Rule rules[] = {
 	{ NULL,               NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 	{ "Spotify",		  NULL,		NULL,			1 << 8,    0,		   0,			-1,		  -1 },
 	{ "kcalc",			  NULL,		NULL,			0,		   1,		   0,			-1,		  -1 },
+	{ "feh",			  NULL,		NULL,			0,		   1,		   0,			-1,		  -1 },
 };
 
 /* layout(s) */
@@ -73,6 +74,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, "-bw", "2", "-c", "-l", "10",  NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browser[] = { "brave", NULL };
+static const char *private_browser[] = { "brave", "--incognito", NULL };
 static const char *spotify[] = { "spotify-launcher", NULL };
 #define volctl "volctl.sh"
 #define mediactl "mediactl.sh"
@@ -82,6 +84,8 @@ static const char *muteToggle[] = { volctl, "mute", NULL };
 static const char *media_play[] = { mediactl, "play", NULL };
 static const char *media_next[] = { mediactl, "next", NULL };
 static const char *media_prev[] = { mediactl, "prev", NULL };
+static const char *media_forward[] = { mediactl, "forward", NULL };
+static const char *media_back[] = { mediactl, "back", NULL };
 static const char *flameshotGUI[] = { "flameshot", "gui", NULL };
 static const char *flameshotFULL[] = { "flameshot", "full", NULL };
 static const char *powermenu[] = { "powermenu.sh", NULL };
@@ -103,13 +107,21 @@ static const Key keys[] = {
 	{ 0,							XF86XK_AudioPlay, spawn,   {.v = media_play } },
 	{ 0,							XF86XK_AudioNext, spawn,   {.v = media_next } },
 	{ 0,							XF86XK_AudioPrev, spawn,   {.v = media_prev } },
+	{ ControlMask,					XF86XK_AudioPrev, spawn,   {.v = media_back } },
+	{ ControlMask,					XF86XK_AudioNext, spawn,   {.v = media_forward } },
 	{ MODKEY,						XK_x,      spawn,          {.v = powermenu } },
 	{ MODKEY,						XK_Escape,	    spawn,	   {.v = htop } },
 	{ ShiftMask,			        XK_Print,  spawn,	       {.v = flameshotFULL } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,			            XK_b,	   spawn,	       {.v = browser } },
+	{ MODKEY|ShiftMask,	            XK_b,	   spawn,	       {.v = private_browser } },
+	{ 0,				            XF86XK_HomePage,spawn,     {.v = browser } },
 	{ MODKEY,			            XK_s,	   spawn,	       {.v = spotify } },
+	{ MODKEY,			            XK_e,	   spawn,	       SHCMD("thunar") },
+	{ 0,				            XF86XK_Explorer,   spawn,  SHCMD("thunar") },
+	{ 0,				            XF86XK_Calculator, spawn,  SHCMD("kcalc") },
+	{ 0,				            XF86XK_Tools,	spawn,	   SHCMD("vlc -Z ~/Music") },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -123,6 +135,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,             XK_f,      fullscreen,     {0} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
